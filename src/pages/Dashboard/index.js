@@ -1,11 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import socketio from 'socket.io-client'
 import api from "../../services/api";
 
 import './styles.css'
 
 export default function Dashboard() {
   const [spots, setSpots] = useState([]);
+
+  useEffect(() => {
+    const user_id = localStorage.getItem('user');
+    // Enviando o user_id para o backend.
+    const socket = socketio('http://localhost:3333', {
+      query: { user_id },
+    });
+
+    // Toda vez que receber uma mensagem com o nome de "hello" vai printar o conteudo na tela.
+    socket.on('hello', data => {
+      console.log(data);
+    });
+  }, []);
 
   // Relembrando... useEffect pode ser usado no lugar do ComponentWillMount e do ComponentWillUpdate
   // para carregar as informações logo que o componente é chamado e atualizar a tela quando atualizamos informações.
