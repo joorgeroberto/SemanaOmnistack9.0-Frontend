@@ -1,0 +1,38 @@
+ul.spot-list {
+    width: 100%;
+    /*Retirando as bolinhas*/
+    list-style: none;
+    /*Usando grid*/
+    display: grid;
+    /*Duas colunas. Dois espaços iguais um ao lado do outro*/
+    grid-template-columns: 1fr 1fr;
+    /*Espacamento entre as duas colunas de 20px*/
+    grid-gap: 20px;
+    margin-bottom: 30px;
+}
+
+/*Estilizando cada item da lista*/
+ul.spot-list li {
+    display: flex;
+    flex-direction: column;
+}
+
+/*Estilizando o header onde a imagem vai ficar*/
+ul.spot-list li header {
+    width: 100%;
+    height: 120px;
+    /*Cover para que a imagem ocupe todo o espaço possivel. Mesmo q a altura/largura aumentem.*/
+    background-size: cover;
+    border-radius: 4px;
+}
+
+ul.spot-list li strong {
+    margin-top: 10px;
+    font-size: 24px;
+    color: #444;
+}
+
+ul.spot-list li span {
+    font-size: 15px;
+    color: #999;
+}

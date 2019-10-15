@@ -1,22 +1,109 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap');
+
+/*Resetando o CSS - Limpando estilizações que vem por padrão no CSS (Como o globalStyles do blog)*/
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;/*Nos ajudará a fazer espaçamentos*/
 }
 
-.App-logo {
-  height: 40vmin;
+/* Essas são as 3 tags que estão envolvendo todo o documento
+   Aqui definiremos uma altura minima de 100% para que a imagem de fundo fique em toda a página*/
+html, body, #root {
+  min-height: 100%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+body {
+  /*Definindo a cor de fundo e a pasta onde a imagem está*/
+  background: #000 url('./assets/background.jpg');
+  /*Fazendo com que a imagem se adapte ao formato da tela*/
+  background-size: cover;
+  /*A fonte fica mais detalhada*/
+  -webkit-font-smoothing: antialiased !important;
+}
+
+/* Usando a fonte Roboto no corpo do projeto, nos inputs e nos buttons  */
+body, input, button {
+  /* Se não tiver a fonte Roboto ele usa Arial
+     Se não tiver Arial ele usa Helvetica
+     Se não tiver helvetica ele usa sans-serif
+  */
+  font-family: 'Roboto', Arial, Helvetica, sans-serif ;
+  font-size: 14px;
+}
+
+.container {
+  /* Margem de 80px pro topo da tela.
+     Margens esquerda e direita automáricas para centralizar*/
+  margin: 40px auto;
+  /* Se tiver menos de 450px ele ocupa 80% da largura da tela.
+     Se tiver mais ele ocupa só os 450px */
+  max-width: 450px;
+  width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #09d3ac;
+.content {
+  width: 100%;
+  background: #FFF;
+  margin-top: 30px;
+  border-radius: 4px;
+  padding: 30px;
+}
+
+/*Estilizando o primeiro p que vem nesta 'div content'*/
+.content > p {
+  font-size: 22px;
+  line-height: 30px;
+  margin-bottom: 30px;
+}
+
+.content form {
+  display: flex;
+  flex-direction: column;
+}
+
+.content form label {
+  font-size: 14px;
+  color: #444;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.content form label span {
+  font-weight: normal;
+  color: #999;
+  font-size: 12px;
+}
+
+.content form input {
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  height: 45px;
+  /* Acima e abaixo não tem padding mas nas laterias tem de 15px */
+  padding: 0 15px;
+  font-size: 16px;
+}
+
+/* Estilizando apenas os botões que possuem 'btn' como nome */
+.content button.btn {
+  border: 0;
+  border-radius: 2px;
+  width: 100%;
+  height: 42px;
+  padding: 0 20px;
+  font-weight: bold;
+  background: #f05a5b;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Hover no botão.
+Quando o usuário estiver com o cursor no botão ele fica com um vermelho mais escuro.*/
+.content button.btn:hover {
+  background: #e14f50;
 }
