@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import socketio from 'socket.io-client'
 import api from "../../services/api";
@@ -7,19 +7,25 @@ import './styles.css'
 
 export default function Dashboard() {
   const [spots, setSpots] = useState([]);
+  const [requests, setRequests] = useState([]);
+
+  const user_id = localStorage.getItem('user');
+  // Enviando o user_id para o backend.
+  const socket = useMemo(() => socketio('http://localhost:3333', {
+    query: { user_id },
+  }), [user_id]);
 
   useEffect(() => {
-    const user_id = localStorage.getItem('user');
-    // Enviando o user_id para o backend.
-    const socket = socketio('http://localhost:3333', {
-      query: { user_id },
-    });
 
     // Toda vez que receber uma mensagem com o nome de "hello" vai printar o conteudo na tela.
-    socket.on('hello', data => {
+    /*socket.on('hello', data => {
       console.log(data);
+    });*/
+    socket.on('booking_request', data => {
+      //console.log(data);
+      setRequests([...requests, data])
     });
-  }, []);
+  }, [requests, socket]);
 
   // Relembrando... useEffect pode ser usado no lugar do ComponentWillMount e do ComponentWillUpdate
   // para carregar as informações logo que o componente é chamado e atualizar a tela quando atualizamos informações.
@@ -41,8 +47,36 @@ export default function Dashboard() {
     loadSpots();
   }, []);
 
+  async function handleAccept(id) {
+    await api.post(`/bookings/${id}/approvals`);
+
+    // Filtra as requisições e remove a que acabamos de aprovar.
+    // Ou seja, percorre as requests e só deixa as que possuem requests diferentes do que acabamos de aprovar.
+    setRequests(requests.filter(request => request._id !== id));
+  }
+
+  async function handleReject(id) {
+    await api.post(`/bookings/${id}/rejections`);
+
+    setRequests(requests.filter(request => request._id !== id));
+  }
+
   return (
     <>
+      <ul className="notifications">
+        {requests.map(request => (
+          <li key={request._id}>
+            <p>
+              <strong>{request.user.email} </strong>
+               está solicitando uma reserva em
+              <strong> {request.spot.company}</strong>
+              para a data <strong> {request.date}</strong>.
+            </p>
+            <button className="accept" onClick={() => handleAccept(request._id)}>ACEITAR</button>
+            <button className="reject" onClick={() => handleReject(request._id)}>REJEITAR</button>
+          </li>
+        ))}
+      </ul>
       <ul className="spot-list">
         {/* Percorreremos a lista de spots que buscamos no backend e para cada elemento renderizaremos. */}
         {spots.map( spot => (
